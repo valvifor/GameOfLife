@@ -3,10 +3,11 @@
 #include <gmock/gmock.h>
 
 #include "Parser.h"
-
-using namespace std;
+#include "Field.h"
+#include "Game.h"
 
 int main(){
+    string command;
+    Field field;
 
-    return 0;
 }

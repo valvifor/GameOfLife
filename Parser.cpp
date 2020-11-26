@@ -21,7 +21,7 @@ void Parser::getCommand(Parser &input) {
     } else if (cmd.substr(0, 4) == "back"){
         space.back();
     } else if(cmd.substr(0, 4) == "step"){
-
+        space.step();
     } else if(cmd.substr(0, 4) == "save"){
         space.save();
     } else if(cmd.substr(0, 4) == "load"){

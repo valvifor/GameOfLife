@@ -30,6 +30,7 @@ void Field::reset() {
             space2[i][j] = '.';
         }
     }
+    stepCounter = 0;
 }
 
 void Field::set(int &X, int &Y) {
@@ -112,4 +113,26 @@ int Field::numberOfLiveNeighbors(int &X, int &Y) {
         }
     }
     return count;
+}
+
+void Field::lifeCell(int &X, int &Y) {
+    if ((space1[X][Y] == '.') && (numberOfLiveNeighbors(X, Y) == 3)){
+        space2[X][Y] = '*';
+    } else if ((space1[X][Y] == '*') && (numberOfLiveNeighbors(X, Y) < 2 || numberOfLiveNeighbors(X, Y) > 3)) {
+        space2[X][Y] = '.';
+    }
+}
+
+void Field::lifeField() {
+    for (int i = 0; i < spaceHeight; i++){
+        for (int j = 0; j < spaceWidth; j++){
+            space1[i][j] = space2[i][j];
+        }
+    }
+    for (int i = 0; i < spaceHeight; i++) {
+        for (int j = 0; j < spaceWidth; j++) {
+            lifeCell(i, j);
+        }
+    }
+    stepCounter++;
 }

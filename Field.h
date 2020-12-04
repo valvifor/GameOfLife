@@ -15,7 +15,7 @@ private:
     char space2[spaceWidth][spaceHeight];
     int stepCounter = 0;
     bool canBack = false;
-    void lifeCell(int&, int&);
+    bool gameOver = false;
 public:
     Field();
     ~Field();
@@ -27,12 +27,14 @@ public:
     void clear(int&, int&);
     void step();
     void back();
-    void save(std::ofstream&);
-    void load(std::ifstream&);
+    void save(const string &);
+    void load(const string &);
 
     char cellContent(int&, int&);
     int numberOfLiveNeighbors(int&, int&);
     void lifeField();
+    void lifeCell(int&, int&);
+    bool equal();
 };
 
 #endif //GAMELIFE_FIELD_H

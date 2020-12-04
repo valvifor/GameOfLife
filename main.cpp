@@ -4,7 +4,6 @@
 
 #include "Parser.h"
 #include "Field.h"
-#include "Game.h"
 
 int main(){
     string command;

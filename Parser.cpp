@@ -1,33 +1,32 @@
 #include "Parser.h"
 
-string Parser::getCommand() {
+string Parser::getCom() {
     string command;
-    cin >> command;
+    getline(cin, command);
     return command;
 }
 
-string Parser::getCommand(Parser &input) {
-    string cmd = input.getCommand();
+void Parser::getCommand() {
+    string cmd = getCom();
     while (cmd != "exit") {
         if (cmd == "reset") {
             space.reset();
         } else if (cmd.substr(0, 3) == "set") {
             int X = cmd[3] - 65;
             int Y = cmd[4] - 48;
-            space.set(X, Y);
+            space.set(Y, X);
         } else if (cmd.substr(0, 5) == "clear") {
             int X = cmd[5] - 65;
-            int Y = cmd[7] - 48;
-            space.clear(X, Y);
+            int Y = cmd[6] - 48;
+            space.clear(Y, X);
         } else if (cmd.substr(0, 4) == "back") {
             space.back();
         } else if (cmd.substr(0, 4) == "step") {
-            space.step();
             if (cmd.length() == 4){
-                space.lifeField();
+                space.step();
             } else {
                 for (int i = 0; i < stoi(cmd.substr(5)); i++){
-                    space.lifeField();
+                    space.step();
                 }
             }
             if (space.equal()){
@@ -41,5 +40,6 @@ string Parser::getCommand(Parser &input) {
             string name = cmd.substr(5);
             space.load(name);
         } else cout << "Wrong command";
+        cout << space;
     }
 }

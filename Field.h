@@ -11,11 +11,10 @@ const int spaceHeight = 10;
 
 class Field{
 private:
-    char space1[spaceWidth][spaceHeight];
-    char space2[spaceWidth][spaceHeight];
+    char** space1;
+    char** space2;
     int stepCounter = 0;
     bool canBack = false;
-    bool gameOver = false;
 public:
     Field();
     ~Field();
@@ -32,7 +31,6 @@ public:
 
     char cellContent(int&, int&);
     int numberOfLiveNeighbors(int&, int&);
-    void lifeField();
     void lifeCell(int&, int&);
     bool equal();
 };

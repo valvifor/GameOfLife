@@ -7,8 +7,8 @@ class Parser{
 private:
     Field space;
 public:
-    static string getCommand();
-    string getCommand(Parser&);
+    string getCom();
+    void getCommand();
 };
 
 

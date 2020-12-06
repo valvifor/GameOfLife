@@ -1,7 +1,11 @@
 #include "Field.h"
 
 Field::Field() {
+    space1 = new char*[spaceHeight];
+    space2 = new char*[spaceHeight];
     for (int i = 0; i < spaceHeight; i++){
+        space1[i] = new char[spaceWidth];
+        space2[i] = new char[spaceWidth];
         for (int j = 0; j < spaceWidth; j++){
             space1[i][j] = '.';
             space2[i][j] = '.';
@@ -9,7 +13,14 @@ Field::Field() {
     }
 }
 
-Field::~Field()= default;
+Field::~Field(){
+    for (int i = 0; i < spaceHeight; i++){
+        delete [] space1[i];
+        delete [] space2[i];
+    }
+    delete [] space1;
+    delete [] space2;
+}
 
 ostream &operator<<(ostream &output, const Field &field) {
     output << "  A B C D E F G H I J" << endl;
@@ -42,14 +53,17 @@ void Field::set(int &X, int &Y) {
 void Field::clear(int &X, int &Y) {
     space2[X][Y] = '.';
     canBack = false;
+
 }
 
 void Field::step() {
-    for (int i = 0; i < spaceHeight; i++){
-        for (int j = 0; j < spaceWidth; j++){
-            swap(space2[i][j], space1[i][j]);
+    swap(space2, space1);
+    for (int i = 0; i < spaceHeight; i++) {
+        for (int j = 0; j < spaceWidth; j++) {
+            lifeCell(j, i);
         }
     }
+    stepCounter++;
 }
 
 void Field::back() {
@@ -94,7 +108,7 @@ void Field::load(const string &input) {
 }
 
 char Field::cellContent(int &X, int &Y) {
-    return space1[X][Y];
+    return space2[X][Y];
 }
 
 int Field::numberOfLiveNeighbors(int &X, int &Y) {
@@ -106,23 +120,23 @@ int Field::numberOfLiveNeighbors(int &X, int &Y) {
             }
             if (X + i < 0 && Y + j < 0){
                 int x = 9, y = 9;
-                if (space2[x][y] == '*') {
+                if (space1[x][y] == '*') {
                     count++;
                 }
             } else if (X + i < 0 && Y + j >= 0){
                 int x = 9, y = (Y + j) % spaceHeight;
-                if (space2[x][y] == '*') {
+                if (space1[x][y] == '*') {
                     count++;
                 }
             }else if (X + i >= 0 && Y + j < 0){
                 int x = (X + i) % spaceWidth, y = 9;
-                if (space2[x][y] == '*') {
+                if (space1[x][y] == '*') {
                     count++;
                 }
             } else {
                 int x = (X + i) % spaceWidth;
                 int y = (Y + j) % spaceHeight;
-                if (space2[x][y] == '*') {
+                if (space1[x][y] == '*') {
                     count++;
                 }
             }
@@ -136,21 +150,9 @@ void Field::lifeCell(int &X, int &Y) {
         space2[X][Y] = '*';
     } else if ((space1[X][Y] == '*') && (numberOfLiveNeighbors(X, Y) < 2 || numberOfLiveNeighbors(X, Y) > 3)) {
         space2[X][Y] = '.';
+    } else {
+        space2[X][Y] = space1[X][Y];
     }
-}
-
-void Field::lifeField() {
-    for (int i = 0; i < spaceHeight; i++){
-        for (int j = 0; j < spaceWidth; j++){
-            space1[i][j] = space2[i][j];
-        }
-    }
-    for (int i = 0; i < spaceHeight; i++) {
-        for (int j = 0; j < spaceWidth; j++) {
-            lifeCell(i, j);
-        }
-    }
-    stepCounter++;
 }
 
 bool Field::equal() {

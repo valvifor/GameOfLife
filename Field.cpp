@@ -53,7 +53,6 @@ void Field::set(int &X, int &Y) {
 void Field::clear(int &X, int &Y) {
     space2[X][Y] = '.';
     canBack = false;
-
 }
 
 void Field::step() {
@@ -63,6 +62,7 @@ void Field::step() {
             lifeCell(j, i);
         }
     }
+    canBack = true;
     stepCounter++;
 }
 

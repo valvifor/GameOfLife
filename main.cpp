@@ -103,7 +103,21 @@ TEST(TestReset, test9){
     }
 }
 
-TEST(LargeTest, test10){
+TEST(BackTest, test10){
+    Field game;
+    int x = 6;
+    int y = 7;
+    int a = 6;
+    int b = 8;
+    game.set(x, x);
+    game.set(y, y);
+    game.set(a, b);
+    game.step();
+    game.back();
+    EXPECT_EQ('.', game.cellContent(x, y));
+}
+
+TEST(LargeTest, test11){
     Field game;
     for (int i = 0; i < spaceHeight; i++) {
         for (int j = 0; j < spaceWidth; j++) {

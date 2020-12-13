@@ -1,45 +1,58 @@
 #include "Parser.h"
 
-string Parser::getCom() {
-    string command;
-    getline(cin, command);
-    return command;
+void Game::game() {
+    string cmd;
+    while (!command.isOver()) {
+        getline(cin, cmd);
+        switch (parser.getCommand(cmd)) {
+            case Commands::reset:
+                command.reset();
+                break;
+            case Commands::set:
+                command.set(cmd);
+                break;
+            case Commands::clear:
+                command.clear(cmd);
+                break;
+            case Commands::back:
+                command.back();
+                break;
+            case Commands::step:
+                if (cmd.length() == 4) {
+                    command.step(cmd);
+                } else {
+                    for (int i = 0; i < stoi(cmd.substr(4)); i++) {
+                        command.step(cmd);
+                    }
+                }
+                break;
+            case Commands::save:
+                command.save(cmd);
+                break;
+            case Commands::load:
+                command.load(cmd);
+                break;
+            default:
+                cout << "Wrong command";
+        }
+    }
 }
 
-void Parser::getCommand() {
-    string cmd = getCom();
-    while (cmd != "exit") {
-        if (cmd == "reset") {
-            space.reset();
-        } else if (cmd.substr(0, 3) == "set") {
-            int X = cmd[3] - 65;
-            int Y = cmd[4] - 48;
-            space.set(Y, X);
-        } else if (cmd.substr(0, 5) == "clear") {
-            int X = cmd[5] - 65;
-            int Y = cmd[6] - 48;
-            space.clear(Y, X);
-        } else if (cmd.substr(0, 4) == "back") {
-            space.back();
-        } else if (cmd.substr(0, 4) == "step") {
-            if (cmd.length() == 4){
-                space.step();
-            } else {
-                for (int i = 0; i < stoi(cmd.substr(5)); i++){
-                    space.step();
-                }
-            }
-            if (space.equal()){
-                cout << "Game is over" << endl;
-                break;
-            }
-        } else if (cmd.substr(0, 4) == "save") {
-            string name = cmd.substr(5);
-            space.save(name);
-        } else if (cmd.substr(0, 4) == "load") {
-            string name = cmd.substr(5);
-            space.load(name);
-        } else cout << "Wrong command";
-        cout << space;
+Commands Parser::getCommand(const string &cmd) {
+    if (cmd == "reset"){
+        return Commands::reset;
+    } else if (cmd.substr(0, 3) == "set"){
+        return Commands::set;
+    } else if (cmd.substr(0, 5) == "clear") {
+        return Commands::clear;
+    } else if (cmd.substr(0, 4) == "back") {
+        return Commands::back;
+    } else if (cmd.substr(0, 4) == "step") {
+        return Commands::step;
+    } else if (cmd.substr(0, 4) == "save") {
+        return Commands::save;
+    } else if (cmd.substr(0, 4) == "load") {
+        return Commands::load;
     }
+    return Commands::ERROR;
 }

@@ -31,7 +31,6 @@ ostream &operator<<(ostream &output, const Field &field) {
         }
         output << endl;
     }
-    output << "Number of steps: " << field.stepCounter << endl;
     return output;
 }
 
@@ -41,70 +40,47 @@ void Field::reset() {
             space2[i][j] = '.';
         }
     }
-    canBack = false;
-    stepCounter = 0;
 }
 
 void Field::set(int &X, int &Y) {
     space2[X][Y] = '*';
-    canBack = false;
 }
 
 void Field::clear(int &X, int &Y) {
     space2[X][Y] = '.';
-    canBack = false;
 }
 
 void Field::step() {
     swap(space2, space1);
-    for (int i = 0; i < spaceHeight; i++) {
-        for (int j = 0; j < spaceWidth; j++) {
-            lifeCell(j, i);
-        }
-    }
-    canBack = true;
-    stepCounter++;
 }
 
 void Field::back() {
-    if (canBack) {
-        for (int i = 0; i < spaceHeight; i++) {
-            for (int j = 0; j < spaceWidth; j++) {
-                swap(space2[i][j], space1[i][j]);
-            }
-        }
-        stepCounter--;
-        canBack = false;
-    } else {
-        cout << "Error" << endl;
-    }
+    swap(space2, space1);
 }
 
-void Field::save(const string &output) {
-    string name = output + ".txt";
-    ofstream file;
-    file.open(name);
+void Field::save(ofstream &output) {
     for (size_t i = 0; i < spaceHeight; i++){
         for (size_t j = 0; j < spaceWidth; j++){
-            file << space2[i][j] << " ";
+            output << space2[i][j] << " ";
         }
-        file << endl;
+        output << endl;
     }
-    file.close();
 }
 
-void Field::load(const string &input) {
-    string name = input + ".txt";
-    ifstream file;
-    file.open(name);
-    for (int i = 0; i < spaceHeight; i++){
-        for (int j = 0; j < spaceWidth; j++){
-            file >> space2[i][j];
+void Field::load(ifstream &input) {
+    int x = 0;
+    int y = 0;
+    char c;
+    input >> c;
+    while (input){
+        space2[y][x] = c;
+        space1[y][x] = c;
+        if (++x == spaceWidth){
+            x = 0;
+            y++;
         }
+        input >> c;
     }
-    file.close();
-    stepCounter = 0;
-    canBack = false;
 }
 
 char Field::cellContent(int &X, int &Y) {
@@ -158,10 +134,11 @@ void Field::lifeCell(int &X, int &Y) {
 bool Field::equal() {
     for (int i = 0; i < spaceHeight; i++){
         for (int j = 0; j < spaceWidth; j++){
-            if (space1[i][j] == space2[i][j]){
-                return true;
+            if (space1[i][j] != space2[i][j]){
+                return false;
             }
         }
     }
-    return false;
+    return true;
 }
+

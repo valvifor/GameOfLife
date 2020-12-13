@@ -72,7 +72,7 @@ TEST(TestStep, test7){
     game.step();
     EXPECT_EQ('.', game.cellContent(x, x));
     x--;//2
-    EXPECT_EQ('*', game.cellContent(x, x));
+    EXPECT_EQ('.', game.cellContent(x, x));
     x--;//1
     EXPECT_EQ('.', game.cellContent(x, x));
 }
@@ -87,7 +87,7 @@ TEST(TestStep, test8){
     game.set(y, y);
     game.set(a, b);
     game.step();
-    EXPECT_EQ('*', game.cellContent(x, y));
+    EXPECT_EQ('.', game.cellContent(y, y));
 }
 
 TEST(TestReset, test9){
@@ -117,7 +117,7 @@ TEST(BackTest, test10){
     EXPECT_EQ('.', game.cellContent(x, y));
 }
 
-TEST(LargeTest, test11){
+TEST(TestStep, test11){
     Field game;
     for (int i = 0; i < spaceHeight; i++) {
         for (int j = 0; j < spaceWidth; j++) {
@@ -130,4 +130,9 @@ TEST(LargeTest, test11){
         game.step();
     }
     cout << game;
+}
+
+int main() {
+    Game game;
+    game.game();
 }

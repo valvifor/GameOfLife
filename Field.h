@@ -13,8 +13,6 @@ class Field{
 private:
     char** space1;
     char** space2;
-    int stepCounter = 0;
-    bool canBack = false;
 public:
     Field();
     ~Field();
@@ -26,8 +24,8 @@ public:
     void clear(int&, int&);
     void step();
     void back();
-    void save(const string &);
-    void load(const string &);
+    void save(ofstream &);
+    void load(ifstream &);
 
     char cellContent(int&, int&);
     int numberOfLiveNeighbors(int&, int&);
